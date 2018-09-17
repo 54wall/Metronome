@@ -25,7 +25,6 @@ public class Metronome {
     @Named("newThread")
     Scheduler scheduler;
     private String TAG = Metronome.class.getSimpleName();
-    //    public static final int DEFAULT_BEATS = 4;
     private int mBpm = 100;
     private int mX = 4;
     private int mY = 4;
@@ -41,7 +40,6 @@ public class Metronome {
 
     @Inject
     public Metronome() {
-//        setDelay(DEFAULT_DELAY);
         Log.e(TAG, "Metronome");
         setConfig(mBpm, mX, mY);
     }
@@ -61,13 +59,8 @@ public class Metronome {
         mBpm = pdm;
         mX = x;
         mY = y;
-//        int  newDelay=(int)(((1000*60.0)/ mBpm)*(1.0*mX/mY));
-//        if(newDelay==delay){
-//            return;
-//        }
         delay = (int) (((1000 * 60.0) / mBpm) * (1.0 * mX / mY));
         delayIsChange = true;
-//        setDelay(delay);
     }
 
 
@@ -118,23 +111,6 @@ public class Metronome {
         return Boolean.TRUE.equals(playStateObservable.getValue());
     }
 
-    //    Handler handler = new Handler();
-//
-//
-//    private void  postDelayed(int time){
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                beat++;
-//                beatObservable.onNext(beat);
-//                if(beat==numBeats){
-//                    beat = 0;
-//                }
-//                postDelayed(delay);
-//            }
-//        },time);
-//
-//    }
     private void play() {
         Log.e(TAG, "play");
         playStateObservable.onNext(true);
@@ -143,8 +119,7 @@ public class Metronome {
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long o) {
-//                        Log.e("LDQ","111111111111     beat="+beat);
-//                        courentTime= SystemClock.currentThreadTimeMillis();
+                        Log.e(TAG,"play() beat="+beat);
                         beat++;
                         beatObservable.onNext(beat);
                         if (beat == numBeats) {
@@ -161,19 +136,6 @@ public class Metronome {
 
     }
 
-    //    Timer timer = new Timer();
-//    TimerTask task = new TimerTask() {
-//
-//        @Override
-//        public void run() {
-//            // 需要做的事:发送消息
-//            beat++;
-//            beatObservable.onNext(beat);
-//            if(beat==numBeats){
-//                beat = 0;
-//            }
-//        }
-//    };
     private void stop() {
         Log.e(TAG, "stop");
         stopTrigger.onNext(null);

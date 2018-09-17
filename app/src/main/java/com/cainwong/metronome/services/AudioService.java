@@ -23,9 +23,6 @@ import rx.functions.Action1;
 
 public class AudioService extends Service {
 
-//    public static final int CLICK_SOUND = AudioManager.FX_KEYPRESS_DELETE;
-//    public static final int ACCENT_CLICK_SOUND = AudioManager.FX_KEYPRESS_STANDARD;
-
     public static final int CLICK_SOUND = AudioManager.FX_KEYPRESS_STANDARD;
     public static final int ACCENT_CLICK_SOUND = AudioManager.FX_FOCUS_NAVIGATION_UP;
     @Inject
@@ -61,9 +58,9 @@ public class AudioService extends Service {
         Log.e(TAG, "initSoundPool");
         //实例化AudioManager对象，控制声音
         am = (AudioManager) this.getSystemService(this.AUDIO_SERVICE);
-//最大音量
+        //最大音量
         audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-//当前音量
+        //当前音量
         audioCurrentVolumn = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         volumnRatio = audioCurrentVolumn / audioMaxVolumn;
 
@@ -100,7 +97,6 @@ public class AudioService extends Service {
             beatSubscription = metronome.getBeatObservable().subscribe(new Action1<Integer>() {
                 @Override
                 public void call(Integer beat) {
-//                    audioManager.playSoundEffect((beat == 1) ? ACCENT_CLICK_SOUND : CLICK_SOUND, 1);
                     int key = (beat == 1) ? 0 : 1;
                     Log.e(TAG, "onStartCommand beat=" + beat);
                     playSoundPool(key);
