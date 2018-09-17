@@ -4,14 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cainwong.metronome.App;
 import com.cainwong.metronome.R;
@@ -33,26 +29,20 @@ import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String TAG = MainActivity.class.getSimpleName();
     public static final long MIN_DELAY = 215;
     public static final long MAX_DELAY = 3000;
     public static final int ROUNDTO_VALUE = 10;
-
     @Inject
     Metronome metronome;
-
     @Inject
     @Named("mainThread")
     Scheduler mainThreadScheduler;
-
     @Inject
     @Named("immediate")
     Scheduler intervalScheduler;
-
     @Inject
     @Named("newThread")
     Scheduler newThreadScheduler;
-
     Subscription delaySubscription;
     Subscription playStateSubscription;
     @BindView(R.id.rotate)
@@ -73,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     TextView beatSwitch;
     @BindView(R.id.beat_bpm_et)
     EditText beatBpmEt;
+    private String TAG = MainActivity.class.getSimpleName();
     private int mBpm = 120;
     private int mX = 4;
     private int mY = 4;
@@ -87,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private int screenHeight = 0;
     //软件盘弹起后所占高度阀值
     private int keyHeight = 0;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onResume() {
@@ -135,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    private Handler mHandler=new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,13 +140,13 @@ public class MainActivity extends AppCompatActivity {
         //获取屏幕高度
         screenHeight = this.getWindowManager().getDefaultDisplay().getHeight();
         //阀值设置为屏幕高度的1/3
-        keyHeight = screenHeight/3;
+        keyHeight = screenHeight / 3;
 
         //添加layout大小发生改变监听器
         activityRootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, final int left, final int top, final int right,
-                                       final  int bottom,final  int oldLeft,final  int oldTop, final int oldRight,final  int oldBottom) {
+                                       final int bottom, final int oldLeft, final int oldTop, final int oldRight, final int oldBottom) {
 
                 //old是改变前的左上右下坐标点值，没有old的是改变后的左上右下坐标点值
 
@@ -181,17 +172,17 @@ public class MainActivity extends AppCompatActivity {
                             });
 
                         } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight)) {
-                            String dpmStr=beatBpmEt.getText().toString();
-                            if(dpmStr==null||dpmStr.equals("")){
-                                mBpm=mMinValue;
+                            String dpmStr = beatBpmEt.getText().toString();
+                            if (dpmStr == null || dpmStr.equals("")) {
+                                mBpm = mMinValue;
 //                                beatBpmEt.setText(mMinValue+"");
 //                                metronome.setConfig(mMinValue);
-                            }else {
-                                mBpm= Integer.parseInt(dpmStr);
-                                if(mBpm>mMaxValue){
-                                    mBpm=mMaxValue;
-                                }else if(mBpm<mMinValue){
-                                    mBpm=mMinValue;
+                            } else {
+                                mBpm = Integer.parseInt(dpmStr);
+                                if (mBpm > mMaxValue) {
+                                    mBpm = mMaxValue;
+                                } else if (mBpm < mMinValue) {
+                                    mBpm = mMinValue;
                                 }
 
 
@@ -200,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    beatBpmEt.setText(mBpm+"");
+                                    beatBpmEt.setText(mBpm + "");
 
                                     beatBpmEt.setCursorVisible(false);
                                 }
@@ -214,8 +205,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).start();
 
-                    }
-                });
+            }
+        });
 
     }
 
@@ -267,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-                RxView.clicks(beatLeftIb)
+        RxView.clicks(beatLeftIb)
 //                .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(new Action1<Object>() {
                     @Override
@@ -406,7 +397,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
 //    private int MIN_MARK = mMinValue;
 //    private int MAX_MARK = mMaxValue;
 //    //private void setRegion(EditText et)
@@ -467,20 +457,13 @@ public class MainActivity extends AppCompatActivity {
 }
 
 
-
-
-
-
-
 class BeatModel {
+    int mX;
+    int mY;
     BeatModel(int x, int y) {
         mX = x;
         mY = y;
     }
-
-
-    int mX;
-    int mY;
 
     public int getmX() {
         return mX;

@@ -9,7 +9,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,17 +18,16 @@ import android.view.View;
  * Created by yangle on 2016/11/29.
  */
 public class RotateControlView extends View {
-    public static  int mDefValue =120;   //默认值
-    private int mMaxValue=400;       //最大值
-    private int mMinValue=60;       //最小值
-
+    public static int mDefValue = 120;   //默认值
+    private int mMaxValue = 400;       //最大值
+    private int mMinValue = 60;       //最小值
 
 
     // 当前的角度
-    private float currentAngle= mDefValue;
+    private float currentAngle = mDefValue;
     // 当前按钮旋转的角度
-    private float rotateAngle= mDefValue;
-    private float mValue= mDefValue;
+    private float rotateAngle = mDefValue;
+    private float mValue = mDefValue;
     // 控件宽
     private int width;
     // 控件高
@@ -74,9 +72,25 @@ public class RotateControlView extends View {
     private OnTempChangeListener onTempChangeListener;
 
     // 以下为旋转按钮相关
+    /**
+     * 绘制温度
+     *
+     * @param canvas 画布
+     */
+//    private void drawTemp(Canvas canvas) {
+//        canvas.save();
+//        canvas.translate(getWidth() / 2, getHeight() / 2);
+//
+//
+//
+//        float tempWidth = tempPaint.measureText((int)value + "");
+//        float tempHeight = (tempPaint.ascent() + tempPaint.descent()) / 2;
+//        canvas.drawText((int)value + "°", -tempWidth / 2 - dp2px(5), -tempHeight, tempPaint);
+//        canvas.restore();
+//    }
 
-
-
+    private boolean isDown;
+    private boolean isMove;
 
     public RotateControlView(Context context) {
         this(context, null);
@@ -90,10 +104,11 @@ public class RotateControlView extends View {
         super(context, attrs, defStyleAttr);
         init();
     }
-    public void setMaxAndMinValue(int min,int max,int def){
-        mMinValue=min;
-        mMaxValue=max;
-        mDefValue=def;
+
+    public void setMaxAndMinValue(int min, int max, int def) {
+        mMinValue = min;
+        mMaxValue = max;
+        mDefValue = def;
     }
 
     private void init() {
@@ -149,12 +164,10 @@ public class RotateControlView extends View {
 //        drawTemp(canvas);
     }
 
-
-
-      public void setValue(int value){
-          rotateAngle = value;
-          mValue = value;
-      }
+    public void setValue(int value) {
+        rotateAngle = value;
+        mValue = value;
+    }
 
     /**
      * 绘制旋转按钮
@@ -190,29 +203,6 @@ public class RotateControlView extends View {
         canvas.drawBitmap(buttonImage, matrix, buttonPaint);
     }
 
-
-
-
-    /**
-     * 绘制温度
-     *
-     * @param canvas 画布
-     */
-//    private void drawTemp(Canvas canvas) {
-//        canvas.save();
-//        canvas.translate(getWidth() / 2, getHeight() / 2);
-//
-//
-//
-//        float tempWidth = tempPaint.measureText((int)value + "");
-//        float tempHeight = (tempPaint.ascent() + tempPaint.descent()) / 2;
-//        canvas.drawText((int)value + "°", -tempWidth / 2 - dp2px(5), -tempHeight, tempPaint);
-//        canvas.restore();
-//    }
-
-    private boolean isDown;
-    private boolean isMove;
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -244,7 +234,7 @@ public class RotateControlView extends View {
 //                Log.e("ldq", "mValue= "+mValue+"        angleIncreased="+angleIncreased +"        newangle="+angle +"        oldAngle="+currentAngle );
                 currentAngle = angle;
 //                // 回调温度改变监听
-                onTempChangeListener.change((int)mValue);
+                onTempChangeListener.change((int) mValue);
 
                 invalidate();
 
@@ -311,10 +301,10 @@ public class RotateControlView extends View {
     private void IncreaseAngle(float angle) {
         rotateAngle += angle;
         mValue += angle;
-        if(mValue<mMinValue){
-            mValue=mMinValue;
-        }else if(mValue>mMaxValue){
-            mValue=mMaxValue;
+        if (mValue < mMinValue) {
+            mValue = mMinValue;
+        } else if (mValue > mMaxValue) {
+            mValue = mMaxValue;
         }
     }
 
@@ -328,6 +318,16 @@ public class RotateControlView extends View {
         this.onTempChangeListener = onTempChangeListener;
     }
 
+    public int dp2px(float dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics());
+    }
+
+    private int sp2px(float sp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
+                getResources().getDisplayMetrics());
+    }
+
     /**
      * 温度改变监听接口
      */
@@ -338,15 +338,5 @@ public class RotateControlView extends View {
          * @param temp 温度
          */
         void change(int temp);
-    }
-
-    public int dp2px(float dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                getResources().getDisplayMetrics());
-    }
-
-    private int sp2px(float sp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
-                getResources().getDisplayMetrics());
     }
 }

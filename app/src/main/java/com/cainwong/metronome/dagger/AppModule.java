@@ -54,8 +54,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    AudioManager provideAudioManager(){
-        return (AudioManager)application.getSystemService(Context.AUDIO_SERVICE);
+    AudioManager provideAudioManager() {
+        return (AudioManager) application.getSystemService(Context.AUDIO_SERVICE);
     }
 
 }

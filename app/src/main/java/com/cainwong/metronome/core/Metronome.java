@@ -1,14 +1,8 @@
 package com.cainwong.metronome.core;
 
-import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
 import android.util.Log;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.LogRecord;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,30 +20,29 @@ import rx.subjects.PublishSubject;
 @Singleton
 public class Metronome {
 
-    private String TAG = Metronome.class.getSimpleName();
     public static final int DEFAULT_DELAY = 500;
-//    public static final int DEFAULT_BEATS = 4;
-    private int mBpm =100;
-    private int mX=4;
-    private int mY=4;
-    private int delay;
-    private int numBeats = mX;
-    private int beat = 0;
-    private int firstDelay=0;
-
-    private BehaviorSubject<Integer> delayObservable = BehaviorSubject.create();
-    private BehaviorSubject<Integer> beatObservable = BehaviorSubject.create();
-    private BehaviorSubject<Boolean> playStateObservable = BehaviorSubject.create();
-    private PublishSubject<Object> stopTrigger= PublishSubject.create();
-
     @Inject
     @Named("newThread")
     Scheduler scheduler;
+    private String TAG = Metronome.class.getSimpleName();
+    //    public static final int DEFAULT_BEATS = 4;
+    private int mBpm = 100;
+    private int mX = 4;
+    private int mY = 4;
+    private int delay;
+    private int numBeats = mX;
+    private int beat = 0;
+    private int firstDelay = 0;
+    private BehaviorSubject<Integer> delayObservable = BehaviorSubject.create();
+    private BehaviorSubject<Integer> beatObservable = BehaviorSubject.create();
+    private BehaviorSubject<Boolean> playStateObservable = BehaviorSubject.create();
+    private PublishSubject<Object> stopTrigger = PublishSubject.create();
+    private boolean delayIsChange = false;
 
     @Inject
     public Metronome() {
 //        setDelay(DEFAULT_DELAY);
-        setConfig(mBpm,mX,mY);
+        setConfig(mBpm, mX, mY);
     }
 
     private void setDelay(int delay) {
@@ -58,33 +51,30 @@ public class Metronome {
         restartIfPlaying();
     }
 
-
-
-    private boolean delayIsChange=false;
-    public void setConfig(int pdm,int x,int y){
-        Log.e(TAG,"mBpm:"+mBpm+",mX:"+mX+",mY:"+mY);
-        if(mBpm==0||x==0||y==0){
-         return;
+    public void setConfig(int pdm, int x, int y) {
+        Log.e(TAG, "mBpm:" + mBpm + ",mX:" + mX + ",mY:" + mY);
+        if (mBpm == 0 || x == 0 || y == 0) {
+            return;
         }
-        mBpm =pdm;
-        mX=x;
-        mY=y;
+        mBpm = pdm;
+        mX = x;
+        mY = y;
 //        int  newDelay=(int)(((1000*60.0)/ mBpm)*(1.0*mX/mY));
 //        if(newDelay==delay){
 //            return;
 //        }
-        delay=(int)(((1000*60.0)/ mBpm)*(1.0*mX/mY));
-        delayIsChange=true;
+        delay = (int) (((1000 * 60.0) / mBpm) * (1.0 * mX / mY));
+        delayIsChange = true;
 //        setDelay(delay);
     }
 
 
-    public void setConfig(int x,int y){
-        setConfig(mBpm,x,y);
+    public void setConfig(int x, int y) {
+        setConfig(mBpm, x, y);
     }
 
-    public void setConfig(int pdm){
-        setConfig(pdm,mX,mY);
+    public void setConfig(int pdm) {
+        setConfig(pdm, mX, mY);
     }
 
 
@@ -97,7 +87,7 @@ public class Metronome {
         return delayObservable;
     }
 
-    public Observable<Integer> getBeatObservable(){
+    public Observable<Integer> getBeatObservable() {
         return beatObservable;
     }
 
@@ -106,19 +96,19 @@ public class Metronome {
     }
 
 
-    public void togglePlay(){
-        if(isPlaying()){
+    public void togglePlay() {
+        if (isPlaying()) {
             stop();
         } else {
             play();
         }
     }
 
-    private boolean isPlaying(){
+    private boolean isPlaying() {
         return Boolean.TRUE.equals(playStateObservable.getValue());
     }
 
-//    Handler handler = new Handler();
+    //    Handler handler = new Handler();
 //
 //
 //    private void  postDelayed(int time){
@@ -135,7 +125,7 @@ public class Metronome {
 //        },time);
 //
 //    }
-    private void play(){
+    private void play() {
         playStateObservable.onNext(true);
         Observable.interval(delay, TimeUnit.MILLISECONDS, scheduler)
                 .takeUntil(stopTrigger)
@@ -146,11 +136,11 @@ public class Metronome {
 //                        courentTime= SystemClock.currentThreadTimeMillis();
                         beat++;
                         beatObservable.onNext(beat);
-                        if(beat==numBeats){
+                        if (beat == numBeats) {
                             beat = 0;
                         }
-                        if(delayIsChange){
-                            delayIsChange=false;
+                        if (delayIsChange) {
+                            delayIsChange = false;
                             setDelay(delay);
                         }
 
@@ -158,9 +148,9 @@ public class Metronome {
                 });
 
 
-
     }
-//    Timer timer = new Timer();
+
+    //    Timer timer = new Timer();
 //    TimerTask task = new TimerTask() {
 //
 //        @Override
@@ -173,20 +163,20 @@ public class Metronome {
 //            }
 //        }
 //    };
-    private void stop(){
+    private void stop() {
         stopTrigger.onNext(null);
-        beat=0;
+        beat = 0;
         playStateObservable.onNext(false);
     }
 
-    public void stopPlay(){
-        if(isPlaying()){
+    public void stopPlay() {
+        if (isPlaying()) {
             stop();
         }
     }
 
-    private void restartIfPlaying(){
-        if(isPlaying()) {
+    private void restartIfPlaying() {
+        if (isPlaying()) {
             stopTrigger.onNext(null);
             play();
         }

@@ -14,7 +14,7 @@ public class App extends Application {
 
     private AppComponent component;
 
-    public static  AppComponent component(Context context){
+    public static AppComponent component(Context context) {
         return ((App) context.getApplicationContext()).component;
     }
 

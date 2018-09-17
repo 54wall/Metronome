@@ -26,69 +26,60 @@ public class AudioService extends Service {
 //    public static final int CLICK_SOUND = AudioManager.FX_KEYPRESS_DELETE;
 //    public static final int ACCENT_CLICK_SOUND = AudioManager.FX_KEYPRESS_STANDARD;
 
-    private String TAG = AudioService.class.getSimpleName();
     public static final int CLICK_SOUND = AudioManager.FX_KEYPRESS_STANDARD;
     public static final int ACCENT_CLICK_SOUND = AudioManager.FX_FOCUS_NAVIGATION_UP;
-
     @Inject
     AudioManager audioManager;
-
     @Inject
     Metronome metronome;
-
     Subscription beatSubscription;
-
-    //实例化AudioManager对象，控制声音
-    private AudioManager am =null;
     //最大音量
     float audioMaxVolumn;
     //当前音量
     float audioCurrentVolumn;
     float volumnRatio;
-
+    private String TAG = AudioService.class.getSimpleName();
+    //实例化AudioManager对象，控制声音
+    private AudioManager am = null;
     //然后就是需要初始化SoundPool，并且把音频放入HashMap中
     //音效播放池
-    private SoundPool soundPool = new SoundPool(2,AudioManager.STREAM_MUSIC,0);
+    private SoundPool soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
     //存放音效的HashMap
-    private Map<Integer,Integer> map = new HashMap<Integer,Integer>();
-
+    private Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 
 
     @Override
     public void onCreate() {
-        Log.e(TAG,"onCreate");
+        Log.e(TAG, "onCreate");
         super.onCreate();
         App.component(this).inject(this);
         initSoundPool();
     }
 
 
-
-
-
     private void initSoundPool() {
-        Log.e(TAG,"initSoundPool");
+        Log.e(TAG, "initSoundPool");
         //实例化AudioManager对象，控制声音
-        am = (AudioManager)this.getSystemService(this.AUDIO_SERVICE);
+        am = (AudioManager) this.getSystemService(this.AUDIO_SERVICE);
 //最大音量
         audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 //当前音量
         audioCurrentVolumn = am.getStreamVolume(AudioManager.STREAM_MUSIC);
-        volumnRatio = audioCurrentVolumn/audioMaxVolumn;
+        volumnRatio = audioCurrentVolumn / audioMaxVolumn;
 
-        map.put(0,soundPool.load(this, R.raw.metronome1,1));
-        map.put(1, soundPool.load(this,R.raw.metronome3,1));
+        map.put(0, soundPool.load(this, R.raw.metronome1, 1));
+        map.put(1, soundPool.load(this, R.raw.metronome3, 1));
     }
 
     private void playSoundPool(int key) {
-     final    long time=SystemClock.currentThreadTimeMillis();
-        Log.e(TAG,"key="+key+",volumnRatio="+ volumnRatio);
+        final long time = SystemClock.currentThreadTimeMillis();
+        Log.e(TAG, "key=" + key + ",volumnRatio=" + volumnRatio);
 
 
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int i, int i1) {
-                Log.e(TAG,"setOnLoadCompleteListener"+ (SystemClock.currentThreadTimeMillis()-time));
+                Log.e(TAG, "setOnLoadCompleteListener" + (SystemClock.currentThreadTimeMillis() - time));
             }
         });
         soundPool.play(
@@ -102,17 +93,16 @@ public class AudioService extends Service {
     }
 
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e(TAG,"onStartCommand");
+        Log.e(TAG, "onStartCommand");
         if (beatSubscription == null || beatSubscription.isUnsubscribed()) {
             beatSubscription = metronome.getBeatObservable().subscribe(new Action1<Integer>() {
                 @Override
                 public void call(Integer beat) {
 //                    audioManager.playSoundEffect((beat == 1) ? ACCENT_CLICK_SOUND : CLICK_SOUND, 1);
-                    int key=(beat == 1) ?0:1;
-                    Log.e(TAG,"onStartCommand beat="+beat);
+                    int key = (beat == 1) ? 0 : 1;
+                    Log.e(TAG, "onStartCommand beat=" + beat);
                     playSoundPool(key);
                 }
             });
@@ -121,10 +111,9 @@ public class AudioService extends Service {
     }
 
 
-
     @Override
     public void onDestroy() {
-        Log.e(TAG,"onDestroy");
+        Log.e(TAG, "onDestroy");
         if (beatSubscription != null && !beatSubscription.isUnsubscribed()) {
             beatSubscription.unsubscribe();
         }
@@ -134,7 +123,7 @@ public class AudioService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.e(TAG,"onBind");
+        Log.e(TAG, "onBind");
         return null;
     }
 
