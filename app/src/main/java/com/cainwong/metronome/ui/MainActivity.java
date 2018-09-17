@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.cainwong.metronome.App;
 import com.cainwong.metronome.R;
 import com.cainwong.metronome.RotateControlView;
+import com.cainwong.metronome.core.BeatModel;
 import com.cainwong.metronome.core.Metronome;
 import com.cainwong.metronome.services.AudioService;
 import com.jakewharton.rxbinding.view.RxView;
@@ -457,32 +458,3 @@ public class MainActivity extends AppCompatActivity {
 }
 
 
-class BeatModel {
-    int mX;
-    int mY;
-    BeatModel(int x, int y) {
-        mX = x;
-        mY = y;
-    }
-
-    public int getmX() {
-        return mX;
-    }
-
-    public void setmX(int mX) {
-        this.mX = mX;
-    }
-
-    public int getmY() {
-        return mY;
-    }
-
-    public void setmY(int mY) {
-        this.mY = mY;
-    }
-
-    public String getName() {
-        return mX + "/" + mY;
-    }
-
-}

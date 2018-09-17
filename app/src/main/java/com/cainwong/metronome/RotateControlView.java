@@ -18,11 +18,10 @@ import android.view.View;
  * Created by yangle on 2016/11/29.
  */
 public class RotateControlView extends View {
+
     public static int mDefValue = 120;   //默认值
     private int mMaxValue = 400;       //最大值
     private int mMinValue = 60;       //最小值
-
-
     // 当前的角度
     private float currentAngle = mDefValue;
     // 当前按钮旋转的角度

@@ -42,17 +42,19 @@ public class Metronome {
     @Inject
     public Metronome() {
 //        setDelay(DEFAULT_DELAY);
+        Log.e(TAG, "Metronome");
         setConfig(mBpm, mX, mY);
     }
 
     private void setDelay(int delay) {
+        Log.e(TAG, "setDelay");
         this.delay = delay;
         delayObservable.onNext(delay);
         restartIfPlaying();
     }
 
     public void setConfig(int pdm, int x, int y) {
-        Log.e(TAG, "mBpm:" + mBpm + ",mX:" + mX + ",mY:" + mY);
+        Log.e(TAG, "setConfig mBpm:" + mBpm + ",mX:" + mX + ",mY:" + mY);
         if (mBpm == 0 || x == 0 || y == 0) {
             return;
         }
@@ -70,33 +72,40 @@ public class Metronome {
 
 
     public void setConfig(int x, int y) {
+        Log.e(TAG, "setConfig x y");
         setConfig(mBpm, x, y);
     }
 
     public void setConfig(int pdm) {
+        Log.e(TAG, "setConfig pdm");
         setConfig(pdm, mX, mY);
     }
 
 
     public void setNumBeats(int numBeats) {
+        Log.e(TAG, "setNumBeats");
         this.numBeats = numBeats;
         restartIfPlaying();
     }
 
     public Observable<Integer> getDelayObservable() {
+        Log.e(TAG, "getDelayObservable");
         return delayObservable;
     }
 
     public Observable<Integer> getBeatObservable() {
+        Log.e(TAG, "getBeatObservable");
         return beatObservable;
     }
 
     public Observable<Boolean> getPlayStateObservable() {
+        Log.e(TAG, "getPlayStateObservable");
         return playStateObservable;
     }
 
 
     public void togglePlay() {
+        Log.e(TAG, "togglePlay");
         if (isPlaying()) {
             stop();
         } else {
@@ -105,6 +114,7 @@ public class Metronome {
     }
 
     private boolean isPlaying() {
+        Log.e(TAG, "isPlaying");
         return Boolean.TRUE.equals(playStateObservable.getValue());
     }
 
@@ -126,6 +136,7 @@ public class Metronome {
 //
 //    }
     private void play() {
+        Log.e(TAG, "play");
         playStateObservable.onNext(true);
         Observable.interval(delay, TimeUnit.MILLISECONDS, scheduler)
                 .takeUntil(stopTrigger)
@@ -164,18 +175,21 @@ public class Metronome {
 //        }
 //    };
     private void stop() {
+        Log.e(TAG, "stop");
         stopTrigger.onNext(null);
         beat = 0;
         playStateObservable.onNext(false);
     }
 
     public void stopPlay() {
+        Log.e(TAG, "stopPlay");
         if (isPlaying()) {
             stop();
         }
     }
 
     private void restartIfPlaying() {
+        Log.e(TAG, "restartIfPlaying");
         if (isPlaying()) {
             stopTrigger.onNext(null);
             play();
