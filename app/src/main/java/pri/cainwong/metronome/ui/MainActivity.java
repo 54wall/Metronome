@@ -254,8 +254,8 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        beatStartIb.setImageResource(aBoolean ? R.mipmap.pause_icon
-                                : R.mipmap.play_icon);
+                        beatStartIb.setImageResource(aBoolean ? R.drawable.ic_pause_black_24dp
+                                : R.drawable.ic_play_arrow_black_24dp);
                         if (aBoolean) {
                             Log.e(TAG, "startService");
                             startService(new Intent(getApplicationContext(), AudioService.class));

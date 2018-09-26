@@ -3,7 +3,6 @@
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_dark"
     android:gravity="center"
     android:orientation="vertical"
 
@@ -32,8 +31,8 @@
             android:gravity="center"
 
             android:text="4/4"
-            android:textColor="#45c1ff"
-            android:textSize="43sp" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="40sp" />
 
         <ImageButton
             android:id="@+id/beat_right_ib"
@@ -68,9 +67,9 @@
             android:gravity="center"
             android:inputType="number"
             android:maxLength="3"
-            android:text="120"
-            android:textColor="#ffffff"
-            android:textSize="25sp" />
+            android:text="100"
+            android:textColor="@color/colorPrimary"
+            android:textSize="32sp" />
 
         <ImageButton
             android:id="@+id/beat_plus_ib"
@@ -97,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@drawable/_button_bg"
-            android:src="@mipmap/play_icon" />
+            android:src="@drawable/ic_play_arrow_black_24dp" />
 
     </RelativeLayout>
 
@@ -122,7 +121,7 @@
             android:layout_marginRight="30dp"
             android:gravity="center"
             android:text="切换音色"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
     </LinearLayout>
 
