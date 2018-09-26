@@ -62,7 +62,7 @@ public class Metronome {
         mY = y;
         delay = (int) (((1000 * 60.0) / mBpm) * (1.0 * mX / mY));
         delayIsChange = true;
-        Log.e(TAG,"频率:"+mBpm);
+        Log.e(TAG, "频率:" + mBpm);
     }
 
 
@@ -121,7 +121,7 @@ public class Metronome {
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
-                        Log.e(TAG,"play() beat="+beat+"频率:"+mBpm);
+                        Log.e(TAG, "play() beat=" + beat + "频率:" + mBpm);
                         beat++;
                         beatObservable.onNext(beat);
                         if (beat == numBeats) {
@@ -144,7 +144,7 @@ public class Metronome {
 //        stopTrigger.onComplete();
 
         beat = 0;
-        Log.e(TAG,"stop 重置 beat = 0");
+        Log.e(TAG, "stop 重置 beat = 0");
         playStateObservable.onNext(false);
     }
 

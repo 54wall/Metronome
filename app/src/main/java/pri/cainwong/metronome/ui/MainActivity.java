@@ -9,21 +9,25 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.jakewharton.rxbinding2.view.RxView;
+
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import pri.cainwong.metronome.App;
 import pri.cainwong.metronome.R;
 import pri.cainwong.metronome.RotateControlView;
 import pri.cainwong.metronome.core.BeatModel;
 import pri.cainwong.metronome.core.Metronome;
 import pri.cainwong.metronome.services.AudioService;
-import com.jakewharton.rxbinding2.view.RxView;
-import java.util.concurrent.TimeUnit;
-import javax.inject.Inject;
-import javax.inject.Named;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import io.reactivex.Scheduler;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 //import org.reactivestreams.Subscription;
 
 public class MainActivity extends AppCompatActivity {
@@ -225,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         mBpm = temp;
                         beatBpmEt.setText(mBpm + "");
-                        Log.e(TAG,"频率:"+mBpm);
+                        Log.e(TAG, "频率:" + mBpm);
                     }
                 });
 
@@ -253,10 +257,10 @@ public class MainActivity extends AppCompatActivity {
                         beatStartIb.setImageResource(aBoolean ? R.mipmap.pause_icon
                                 : R.mipmap.play_icon);
                         if (aBoolean) {
-                            Log.e(TAG,"startService");
+                            Log.e(TAG, "startService");
                             startService(new Intent(getApplicationContext(), AudioService.class));
                         } else {
-                            Log.e(TAG,"stopService");
+                            Log.e(TAG, "stopService");
                             stopService(new Intent(getApplicationContext(), AudioService.class));
                         }
                     }

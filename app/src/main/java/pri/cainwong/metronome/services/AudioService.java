@@ -9,19 +9,16 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import pri.cainwong.metronome.App;
-import pri.cainwong.metronome.R;
-import pri.cainwong.metronome.core.Metronome;
-
-import org.reactivestreams.Subscription;
-
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import pri.cainwong.metronome.App;
+import pri.cainwong.metronome.R;
+import pri.cainwong.metronome.core.Metronome;
 
 public class AudioService extends Service {
 
