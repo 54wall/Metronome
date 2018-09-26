@@ -59,15 +59,16 @@ public class AudioService extends Service {
     private void initSoundPool() {
         Log.e(TAG, "initSoundPool");
         //实例化AudioManager对象，控制声音
-        am = (AudioManager) this.getSystemService(this.AUDIO_SERVICE);
+        am = (AudioManager) this.getSystemService(AUDIO_SERVICE);
         //最大音量
         audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         //当前音量
         audioCurrentVolumn = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         volumnRatio = audioCurrentVolumn / audioMaxVolumn;
 
-        map.put(0, soundPool.load(this, pri.cainwong.metronome.R.raw.metronome1, 1));
-        map.put(1, soundPool.load(this, pri.cainwong.metronome.R.raw.metronome3, 1));
+        map.put(0, soundPool.load(this, R.raw.tock0, 1));
+        //metronome3.mp3 在android28上没有声音，因为文件太小，只有467字节
+        map.put(1, soundPool.load(this, R.raw.tick0, 1));
     }
 
     private void playSoundPool(int key) {
@@ -79,6 +80,7 @@ public class AudioService extends Service {
                 Log.e(TAG, "setOnLoadCompleteListener" + (SystemClock.currentThreadTimeMillis() - time));
             }
         });
+//        key = 0;
         soundPool.play(
                 map.get(key),//声音资源
                 volumnRatio,//左声道
