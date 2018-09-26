@@ -1,32 +1,30 @@
-package com.cainwong.metronome.ui;
+package pri.cainwong.metronome.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.cainwong.metronome.App;
-import com.cainwong.metronome.R;
-import com.cainwong.metronome.RotateControlView;
-import com.cainwong.metronome.core.BeatModel;
-import com.cainwong.metronome.core.Metronome;
-import com.cainwong.metronome.services.AudioService;
-import com.jakewharton.rxbinding.view.RxView;
-
+import pri.cainwong.metronome.App;
+import pri.cainwong.metronome.R;
+import pri.cainwong.metronome.RotateControlView;
+import pri.cainwong.metronome.core.BeatModel;
+import pri.cainwong.metronome.core.Metronome;
+import pri.cainwong.metronome.services.AudioService;
+import com.jakewharton.rxbinding2.view.RxView;
 import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Scheduler;
-import rx.Subscription;
-import rx.functions.Action1;
+import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+//import org.reactivestreams.Subscription;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     @Named("newThread")
     Scheduler newThreadScheduler;
-    Subscription delaySubscription;
-    Subscription playStateSubscription;
+    Disposable delaySubscription;
+    Disposable playStateSubscription;
     @BindView(R.id.rotate)
     RotateControlView rotate;
     @BindView(R.id.beat_left_ib)
@@ -157,10 +155,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         RxView.clicks(beatLeftIb)
-//                .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(new Action1<Object>() {
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(new Consumer<Object>() {
                     @Override
-                    public void call(Object o) {
+                    public void accept(Object o) throws Exception {
                         curentBeatDex--;
                         if (curentBeatDex < 0) {
                             curentBeatDex = (mBeatArray.length - 1);
@@ -172,10 +170,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         RxView.clicks(beatRightIb)
-//                .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(new Action1<Object>() {
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(new Consumer<Object>() {
                     @Override
-                    public void call(Object o) {
+                    public void accept(Object o) throws Exception {
                         curentBeatDex++;
                         if (curentBeatDex > (mBeatArray.length - 1)) {
                             curentBeatDex = 0;
@@ -187,10 +185,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         RxView.clicks(beatLessIb)
-//                .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(new Action1<Object>() {
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(new Consumer<Object>() {
                     @Override
-                    public void call(Object o) {
+                    public void accept(Object o) throws Exception {
                         mBpm--;
                         if (mBpm < mMinValue) {
                             mBpm = mMinValue;
@@ -203,10 +201,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         RxView.clicks(beatPlusIb)
-//                .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(new Action1<Object>() {
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(new Consumer<Object>() {
                     @Override
-                    public void call(Object o) {
+                    public void accept(Object o) throws Exception {
                         mBpm++;
                         if (mBpm > mMaxValue) {
                             mBpm = mMaxValue;
@@ -227,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         mBpm = temp;
                         beatBpmEt.setText(mBpm + "");
+                        Log.e(TAG,"频率:"+mBpm);
                     }
                 });
 
@@ -237,38 +236,43 @@ public class MainActivity extends AppCompatActivity {
 
         RxView.clicks(beatStartIb)
                 .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(new Action1<Object>() {
+                .subscribe(new Consumer<Object>() {
                     @Override
-                    public void call(Object o) {
+                    public void accept(Object o) throws Exception {
                         metronome.togglePlay();
                     }
                 });
 
         // play state display
+
         playStateSubscription = metronome.getPlayStateObservable()
                 .observeOn(mainThreadScheduler)
-                .subscribe(new Action1<Boolean>() {
+                .subscribe(new Consumer<Boolean>() {
                     @Override
-                    public void call(Boolean aBoolean) {
+                    public void accept(Boolean aBoolean) throws Exception {
                         beatStartIb.setImageResource(aBoolean ? R.mipmap.pause_icon
                                 : R.mipmap.play_icon);
                         if (aBoolean) {
+                            Log.e(TAG,"startService");
                             startService(new Intent(getApplicationContext(), AudioService.class));
                         } else {
+                            Log.e(TAG,"stopService");
                             stopService(new Intent(getApplicationContext(), AudioService.class));
                         }
                     }
+
+
                 });
 
     }
 
     @Override
     protected void onStop() {
-        if (delaySubscription != null && !delaySubscription.isUnsubscribed()) {
-            delaySubscription.unsubscribe();
+        if (delaySubscription != null && !delaySubscription.isDisposed()) {
+            delaySubscription.dispose();
         }
-        if (playStateSubscription != null && !playStateSubscription.isUnsubscribed()) {
-            playStateSubscription.unsubscribe();
+        if (playStateSubscription != null && !playStateSubscription.isDisposed()) {
+            playStateSubscription.dispose();
         }
         super.onStop();
     }

@@ -1,4 +1,4 @@
-package com.cainwong.metronome.dagger;
+package pri.cainwong.metronome.dagger;
 
 import android.app.Application;
 import android.content.Context;
@@ -9,9 +9,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by cwong on 10/15/15.
@@ -49,7 +50,8 @@ public class AppModule {
     @Singleton
     @Named("immediate")
     Scheduler provideImmediateScheduler() {
-        return Schedulers.immediate();
+//        return Schedulers.immediate();
+        return Schedulers.computation();
     }
 
     @Provides

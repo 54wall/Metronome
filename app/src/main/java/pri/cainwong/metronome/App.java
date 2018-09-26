@@ -1,11 +1,13 @@
-package com.cainwong.metronome;
+package pri.cainwong.metronome;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.cainwong.metronome.dagger.AppComponent;
-import com.cainwong.metronome.dagger.AppModule;
-import com.cainwong.metronome.dagger.DaggerAppComponent;
+import pri.cainwong.metronome.dagger.AppComponent;
+import pri.cainwong.metronome.dagger.AppModule;
+import pri.cainwong.metronome.dagger.DaggerAppComponent;
+
+import pri.cainwong.metronome.dagger.DaggerAppComponent;
 
 /**
  * Created by cwong on 10/15/15.

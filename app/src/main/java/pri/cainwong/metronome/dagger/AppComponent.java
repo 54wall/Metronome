@@ -1,8 +1,8 @@
-package com.cainwong.metronome.dagger;
+package pri.cainwong.metronome.dagger;
 
-import com.cainwong.metronome.core.Metronome;
-import com.cainwong.metronome.services.AudioService;
-import com.cainwong.metronome.ui.MainActivity;
+import pri.cainwong.metronome.core.Metronome;
+import pri.cainwong.metronome.services.AudioService;
+import pri.cainwong.metronome.ui.MainActivity;
 
 import javax.inject.Singleton;
 

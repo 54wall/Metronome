@@ -1,4 +1,4 @@
-package com.cainwong.metronome.services;
+package pri.cainwong.metronome.services;
 
 import android.app.Service;
 import android.content.Intent;
@@ -9,17 +9,19 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.cainwong.metronome.App;
-import com.cainwong.metronome.R;
-import com.cainwong.metronome.core.Metronome;
+import pri.cainwong.metronome.App;
+import pri.cainwong.metronome.R;
+import pri.cainwong.metronome.core.Metronome;
+
+import org.reactivestreams.Subscription;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.inject.Inject;
 
-import rx.Subscription;
-import rx.functions.Action1;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import pri.cainwong.metronome.App;
 
 public class AudioService extends Service {
 
@@ -29,7 +31,7 @@ public class AudioService extends Service {
     AudioManager audioManager;
     @Inject
     Metronome metronome;
-    Subscription beatSubscription;
+    Disposable beatSubscription;
     //最大音量
     float audioMaxVolumn;
     //当前音量
@@ -64,15 +66,13 @@ public class AudioService extends Service {
         audioCurrentVolumn = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         volumnRatio = audioCurrentVolumn / audioMaxVolumn;
 
-        map.put(0, soundPool.load(this, R.raw.metronome1, 1));
-        map.put(1, soundPool.load(this, R.raw.metronome3, 1));
+        map.put(0, soundPool.load(this, pri.cainwong.metronome.R.raw.metronome1, 1));
+        map.put(1, soundPool.load(this, pri.cainwong.metronome.R.raw.metronome3, 1));
     }
 
     private void playSoundPool(int key) {
         final long time = SystemClock.currentThreadTimeMillis();
         Log.e(TAG, "key=" + key + ",volumnRatio=" + volumnRatio);
-
-
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int i, int i1) {
@@ -93,14 +93,19 @@ public class AudioService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e(TAG, "onStartCommand");
-        if (beatSubscription == null || beatSubscription.isUnsubscribed()) {
-            beatSubscription = metronome.getBeatObservable().subscribe(new Action1<Integer>() {
+        if (beatSubscription == null /*|| beatSubscription.isUnsubscribed()*/) {
+            beatSubscription = metronome.getBeatObservable().subscribe(new Consumer<Integer>() {
                 @Override
-                public void call(Integer beat) {
+                public void accept(Integer beat) throws Exception {
                     int key = (beat == 1) ? 0 : 1;
                     Log.e(TAG, "onStartCommand beat=" + beat);
                     playSoundPool(key);
                 }
+
+//                @Override
+//                public void call(Integer beat) {
+
+//                }
             });
         }
         return super.onStartCommand(intent, flags, startId);
@@ -110,8 +115,8 @@ public class AudioService extends Service {
     @Override
     public void onDestroy() {
         Log.e(TAG, "onDestroy");
-        if (beatSubscription != null && !beatSubscription.isUnsubscribed()) {
-            beatSubscription.unsubscribe();
+        if (beatSubscription != null && !beatSubscription.isDisposed()) {
+            beatSubscription.dispose();
         }
         super.onDestroy();
     }

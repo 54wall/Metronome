@@ -1,4 +1,4 @@
-package com.cainwong.metronome.core;
+package pri.cainwong.metronome.core;
 
 import android.util.Log;
 
@@ -8,11 +8,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import rx.Observable;
-import rx.Scheduler;
-import rx.functions.Action1;
-import rx.subjects.BehaviorSubject;
-import rx.subjects.PublishSubject;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.PublishSubject;
+
 
 /**
  * Created by cwong on 10/14/15.
@@ -45,7 +46,7 @@ public class Metronome {
     }
 
     private void setDelay(int delay) {
-        Log.e(TAG, "setDelay");
+        Log.e(TAG, "^^^^^setDelay");
         this.delay = delay;
         delayObservable.onNext(delay);
         restartIfPlaying();
@@ -61,6 +62,7 @@ public class Metronome {
         mY = y;
         delay = (int) (((1000 * 60.0) / mBpm) * (1.0 * mX / mY));
         delayIsChange = true;
+        Log.e(TAG,"频率:"+mBpm);
     }
 
 
@@ -107,19 +109,19 @@ public class Metronome {
     }
 
     private boolean isPlaying() {
-        Log.e(TAG, "isPlaying");
+        Log.e(TAG, "^^^^^isPlaying()");
         return Boolean.TRUE.equals(playStateObservable.getValue());
     }
 
     private void play() {
-        Log.e(TAG, "play");
+        Log.e(TAG, "^^^^^play() interval");
         playStateObservable.onNext(true);
         Observable.interval(delay, TimeUnit.MILLISECONDS, scheduler)
                 .takeUntil(stopTrigger)
-                .subscribe(new Action1<Long>() {
+                .subscribe(new Consumer<Long>() {
                     @Override
-                    public void call(Long o) {
-                        Log.e(TAG,"play() beat="+beat);
+                    public void accept(Long aLong) throws Exception {
+                        Log.e(TAG,"play() beat="+beat+"频率:"+mBpm);
                         beat++;
                         beatObservable.onNext(beat);
                         if (beat == numBeats) {
@@ -129,7 +131,6 @@ public class Metronome {
                             delayIsChange = false;
                             setDelay(delay);
                         }
-
                     }
                 });
 
@@ -137,23 +138,30 @@ public class Metronome {
     }
 
     private void stop() {
-        Log.e(TAG, "stop");
-        stopTrigger.onNext(null);
+        Log.e(TAG, "^^^^^stop");
+        stopTrigger.onNext("stop");
+//        stopTrigger.onNext(null);
+//        stopTrigger.onComplete();
+
         beat = 0;
+        Log.e(TAG,"stop 重置 beat = 0");
         playStateObservable.onNext(false);
     }
 
     public void stopPlay() {
-        Log.e(TAG, "stopPlay");
+        Log.e(TAG, "^^^^^stopPlay");
         if (isPlaying()) {
             stop();
         }
     }
 
     private void restartIfPlaying() {
-        Log.e(TAG, "restartIfPlaying");
+        Log.e(TAG, "^^^^^restartIfPlaying");
+
         if (isPlaying()) {
-            stopTrigger.onNext(null);
+            stopTrigger.onNext("restartIfPlaying");
+//            stopTrigger.onNext(null);
+//            stopTrigger.onComplete();
             play();
         }
     }

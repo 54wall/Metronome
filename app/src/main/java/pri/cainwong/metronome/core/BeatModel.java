@@ -1,4 +1,4 @@
-package com.cainwong.metronome.core;
+package pri.cainwong.metronome.core;
 
 import android.util.Log;
 

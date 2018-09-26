@@ -1,4 +1,4 @@
-package com.cainwong.metronome;
+package pri.cainwong.metronome;
 
 import android.content.Context;
 import android.graphics.Bitmap;
