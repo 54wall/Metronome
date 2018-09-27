@@ -24,11 +24,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import pri.cainwong.metronome.App;
 import pri.cainwong.metronome.R;
-import pri.cainwong.metronome.RotateControlView;
 import pri.cainwong.metronome.core.BeatModel;
 import pri.cainwong.metronome.core.Metronome;
+import pri.cainwong.metronome.customview.RotateControlView;
+import pri.cainwong.metronome.customview.VolumneView;
 import pri.cainwong.metronome.services.AudioService;
-//import org.reactivestreams.Subscription;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     TextView beatSwitch;
     @BindView(R.id.beat_bpm_et)
     EditText beatBpmEt;
+    @BindView(R.id.volume_view)
+    VolumneView volumneView;
     private String TAG = MainActivity.class.getSimpleName();
     private int mBpm = 120;
     private int mX = 4;
@@ -103,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         screenHeight = this.getWindowManager().getDefaultDisplay().getHeight();
         //阀值设置为屏幕高度的1/3
         keyHeight = screenHeight / 3;
+        metronome.setVolumeView(volumneView);
         //添加layout大小发生改变监听器
         activityRootView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -147,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
                             });
                             metronome.setConfig(mBpm);
                             rotate.setValue(mBpm);
+
+
                         }
                     }
                 }).start();
@@ -230,7 +236,8 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         mBpm = temp;
                         beatBpmEt.setText(mBpm + "");
-                        Log.e(TAG, "频率:" + mBpm);
+                        metronome.setVolumeView(volumneView);
+                        metronome.setMetronomeDelay();
                     }
                 });
 

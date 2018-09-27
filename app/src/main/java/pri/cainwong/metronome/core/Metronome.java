@@ -13,6 +13,7 @@ import io.reactivex.Scheduler;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
+import pri.cainwong.metronome.customview.VolumneView;
 
 
 /**
@@ -38,6 +39,7 @@ public class Metronome {
     private BehaviorSubject<Boolean> playStateObservable = BehaviorSubject.create();
     private PublishSubject<Object> stopTrigger = PublishSubject.create();
     private boolean delayIsChange = false;
+    private VolumneView volumneView;
 
     @Inject
     public Metronome() {
@@ -50,6 +52,12 @@ public class Metronome {
         this.delay = delay;
         delayObservable.onNext(delay);
         restartIfPlaying();
+//        if (volumneView !=null){
+//            Log.e(TAG,"setDelaysetDelay!=null delay:"+delay);
+//            volumneView.setDelay(delay);
+//        }else {
+//            Log.e(TAG,"setDelaysetDelay==null");
+//        }
     }
 
     public void setConfig(int pdm, int x, int y) {
@@ -74,6 +82,14 @@ public class Metronome {
     public void setConfig(int pdm) {
         Log.e(TAG, "setConfig pdm");
         setConfig(pdm, mX, mY);
+    }
+
+    public void setVolumeView(VolumneView volumeView){
+        this.volumneView = volumeView;
+    }
+
+    public void setMetronomeDelay(){
+        volumneView.setDelay(delay);
     }
 
 
@@ -128,6 +144,7 @@ public class Metronome {
                             beat = 0;
                         }
                         if (delayIsChange) {
+                            Log.e(TAG,"delayIsChange delay:"+delay);
                             delayIsChange = false;
                             setDelay(delay);
                         }
