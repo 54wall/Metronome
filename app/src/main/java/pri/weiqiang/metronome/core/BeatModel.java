@@ -1,4 +1,4 @@
-package pri.cainwong.metronome.core;
+package pri.weiqiang.metronome.core;
 
 import android.util.Log;
 

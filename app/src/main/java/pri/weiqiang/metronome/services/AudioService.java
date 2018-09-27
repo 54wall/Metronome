@@ -1,4 +1,4 @@
-package pri.cainwong.metronome.services;
+package pri.weiqiang.metronome.services;
 
 import android.app.Service;
 import android.content.Intent;
@@ -16,9 +16,10 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import pri.cainwong.metronome.App;
-import pri.cainwong.metronome.R;
-import pri.cainwong.metronome.core.Metronome;
+import pri.weiqiang.metronome.App;
+import pri.weiqiang.metronome.R;
+import pri.weiqiang.metronome.core.Metronome;
+
 
 public class AudioService extends Service {
 

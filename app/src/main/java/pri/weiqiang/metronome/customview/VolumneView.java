@@ -1,4 +1,4 @@
-package pri.cainwong.metronome.customview;
+package pri.weiqiang.metronome.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,11 +11,12 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import pri.cainwong.metronome.R;
+import pri.weiqiang.metronome.R;
 
 
 public class VolumneView extends View {
 
+    public static final int OFFSET = 5;
     private String TAG = VolumneView.class.getSimpleName();
     private Paint mPaint;
     private int mCount;
@@ -26,12 +27,19 @@ public class VolumneView extends View {
     private double mRandom;
     private float mcurrentHeight;
     private int delay = 600;
-    public static final int OFFSET = 5;
 
     public VolumneView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context, attrs);
 
+    }
+
+    public VolumneView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public VolumneView(Context context) {
+        this(context, null);
     }
 
     private void initView(Context context, AttributeSet attrs) {
@@ -47,14 +55,6 @@ public class VolumneView extends View {
         }
     }
 
-    public VolumneView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public VolumneView(Context context) {
-        this(context, null);
-    }
-
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -62,7 +62,7 @@ public class VolumneView extends View {
         mRectHeight = getMeasuredHeight();
         mRectWidth = (int) (mWidth * 0.8 / mCount);
         mLinearGradient = new LinearGradient(0, 0, mRectWidth, mRectHeight,
-                 Color.TRANSPARENT,getResources().getColor(R.color.colorPrimaryDark)
+                Color.TRANSPARENT, getResources().getColor(R.color.colorPrimaryDark)
                 , Shader.TileMode.CLAMP);
         mPaint.setShader(mLinearGradient);
 
@@ -80,11 +80,11 @@ public class VolumneView extends View {
                     + (i + 1) * mRectWidth, mRectHeight, mPaint);
         }
         postInvalidateDelayed(delay);
-        Log.e(TAG,"onDraw delay:"+delay);
+        Log.e(TAG, "onDraw delay:" + delay);
     }
 
     public void setDelay(int delay) {
         this.delay = delay;
-        Log.e(TAG,"setDelay delay:"+delay);
+        Log.e(TAG, "setDelay delay:" + delay);
     }
 }

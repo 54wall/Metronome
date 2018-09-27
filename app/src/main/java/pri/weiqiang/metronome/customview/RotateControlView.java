@@ -1,4 +1,4 @@
-package pri.cainwong.metronome.customview;
+package pri.weiqiang.metronome.customview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,7 +13,8 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
-import pri.cainwong.metronome.R;
+import pri.weiqiang.metronome.R;
+
 
 /**
  * 温度控制

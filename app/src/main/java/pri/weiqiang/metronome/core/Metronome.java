@@ -1,4 +1,4 @@
-package pri.cainwong.metronome.core;
+package pri.weiqiang.metronome.core;
 
 import android.util.Log;
 
@@ -13,7 +13,7 @@ import io.reactivex.Scheduler;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
-import pri.cainwong.metronome.customview.VolumneView;
+import pri.weiqiang.metronome.customview.VolumneView;
 
 
 /**
@@ -84,11 +84,11 @@ public class Metronome {
         setConfig(pdm, mX, mY);
     }
 
-    public void setVolumeView(VolumneView volumeView){
+    public void setVolumeView(VolumneView volumeView) {
         this.volumneView = volumeView;
     }
 
-    public void setMetronomeDelay(){
+    public void setMetronomeDelay() {
         volumneView.setDelay(delay);
     }
 
@@ -144,7 +144,7 @@ public class Metronome {
                             beat = 0;
                         }
                         if (delayIsChange) {
-                            Log.e(TAG,"delayIsChange delay:"+delay);
+                            Log.e(TAG, "delayIsChange delay:" + delay);
                             delayIsChange = false;
                             setDelay(delay);
                         }

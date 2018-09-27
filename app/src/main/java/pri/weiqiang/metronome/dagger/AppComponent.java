@@ -1,11 +1,11 @@
-package pri.cainwong.metronome.dagger;
+package pri.weiqiang.metronome.dagger;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import pri.cainwong.metronome.core.Metronome;
-import pri.cainwong.metronome.services.AudioService;
-import pri.cainwong.metronome.ui.MainActivity;
+import pri.weiqiang.metronome.core.Metronome;
+import pri.weiqiang.metronome.services.AudioService;
+import pri.weiqiang.metronome.ui.MainActivity;
 
 
 @Component(

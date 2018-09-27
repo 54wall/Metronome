@@ -1,11 +1,12 @@
-package pri.cainwong.metronome;
+package pri.weiqiang.metronome;
 
 import android.app.Application;
 import android.content.Context;
 
-import pri.cainwong.metronome.dagger.AppComponent;
-import pri.cainwong.metronome.dagger.AppModule;
-import pri.cainwong.metronome.dagger.DaggerAppComponent;
+import pri.weiqiang.metronome.dagger.AppComponent;
+import pri.weiqiang.metronome.dagger.AppModule;
+import pri.weiqiang.metronome.dagger.DaggerAppComponent;
+
 
 /**
  * Created by cwong on 10/15/15.

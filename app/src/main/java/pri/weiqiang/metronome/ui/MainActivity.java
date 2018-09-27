@@ -1,4 +1,4 @@
-package pri.cainwong.metronome.ui;
+package pri.weiqiang.metronome.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,13 +22,13 @@ import butterknife.ButterKnife;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import pri.cainwong.metronome.App;
-import pri.cainwong.metronome.R;
-import pri.cainwong.metronome.core.BeatModel;
-import pri.cainwong.metronome.core.Metronome;
-import pri.cainwong.metronome.customview.RotateControlView;
-import pri.cainwong.metronome.customview.VolumneView;
-import pri.cainwong.metronome.services.AudioService;
+import pri.weiqiang.metronome.App;
+import pri.weiqiang.metronome.R;
+import pri.weiqiang.metronome.core.BeatModel;
+import pri.weiqiang.metronome.core.Metronome;
+import pri.weiqiang.metronome.customview.RotateControlView;
+import pri.weiqiang.metronome.customview.VolumneView;
+import pri.weiqiang.metronome.services.AudioService;
 
 
 public class MainActivity extends AppCompatActivity {

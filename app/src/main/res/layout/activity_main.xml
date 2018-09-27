@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <pri.cainwong.metronome.customview.VolumneView
+        <pri.weiqiang.metronome.customview.VolumneView
             android:id="@+id/volume_view"
             android:layout_width="match_parent"
             android:layout_height="240dp"
@@ -50,7 +51,7 @@
         android:layout_width="200dp"
         android:layout_height="200dp">
 
-        <pri.cainwong.metronome.customview.RotateControlView
+        <pri.weiqiang.metronome.customview.RotateControlView
             android:id="@+id/rotate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

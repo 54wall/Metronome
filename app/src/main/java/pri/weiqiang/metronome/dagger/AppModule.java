@@ -1,4 +1,4 @@
-package pri.cainwong.metronome.dagger;
+package pri.weiqiang.metronome.dagger;
 
 import android.app.Application;
 import android.content.Context;
