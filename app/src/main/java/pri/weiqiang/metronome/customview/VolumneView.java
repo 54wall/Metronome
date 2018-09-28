@@ -16,7 +16,7 @@ import pri.weiqiang.metronome.R;
 
 public class VolumneView extends View {
 
-    public static final int OFFSET = 5;
+    public static final int OFFSET = 0;//左边起始偏移量
     private String TAG = VolumneView.class.getSimpleName();
     private Paint mPaint;
     private int mCount;
@@ -60,7 +60,8 @@ public class VolumneView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         mWidth = getMeasuredWidth();
         mRectHeight = getMeasuredHeight();
-        mRectWidth = (int) (mWidth * 0.8 / mCount);
+        mRectWidth = mWidth / mCount;
+        Log.e(TAG, "mWidth:" + mWidth + "mRectWidth:" + mRectWidth);
         mLinearGradient = new LinearGradient(0, 0, mRectWidth, mRectHeight,
                 Color.TRANSPARENT, getResources().getColor(R.color.colorPrimaryDark)
                 , Shader.TileMode.CLAMP);
@@ -70,21 +71,19 @@ public class VolumneView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
+        //整个onDraw将会一直循环运行
+//        Log.e(TAG, "onDraw");
         super.onDraw(canvas);
         for (int i = 0; i < mCount; i++) {
             mRandom = Math.random();
             mcurrentHeight = (float) (mRectHeight * mRandom);
-            float width = (float) (mWidth * 0.4 / 2 + OFFSET);
-            canvas.drawRect(width + i * mRectWidth, mcurrentHeight, width
+            canvas.drawRect(OFFSET + i * mRectWidth, mcurrentHeight, OFFSET
                     + (i + 1) * mRectWidth, mRectHeight, mPaint);
         }
         postInvalidateDelayed(delay);
-        Log.e(TAG, "onDraw delay:" + delay);
     }
 
     public void setDelay(int delay) {
         this.delay = delay;
-        Log.e(TAG, "setDelay delay:" + delay);
     }
 }

@@ -17,7 +17,7 @@
             android:layout_height="240dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            custom:count="5" />
+            custom:count="15" />
 
         <LinearLayout
             android:layout_width="wrap_content"
