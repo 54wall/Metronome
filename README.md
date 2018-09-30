@@ -1,4 +1,13 @@
-# metronome-android
-_A Fully Unit-Tested Rx-Based Reference Application_
+# Metronome-节拍器
 
-https://medium.com/@cainwong/metronome-a-fully-unit-tested-rx-based-reference-application-6aaeba0a9c1a
+一个简单的节拍器，更新至RxJava2。
+
+## 效果图
+<img src="screenshot/screenshot_1.jpg" width="32%"> 
+
+## Forked
+
+- [metronome-android](https://github.com/wongcain/metronome-android)
+- [-Metronome-](https://github.com/LiDaQiang2016/-Metronome-)
+
+### 感谢浏览，喜欢请赏star。

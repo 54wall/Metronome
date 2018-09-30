@@ -52,12 +52,6 @@ public class Metronome {
         this.delay = delay;
         delayObservable.onNext(delay);
         restartIfPlaying();
-//        if (volumneView !=null){
-//            Log.e(TAG,"setDelaysetDelay!=null delay:"+delay);
-//            volumneView.setDelay(delay);
-//        }else {
-//            Log.e(TAG,"setDelaysetDelay==null");
-//        }
     }
 
     public void setConfig(int pdm, int x, int y) {
@@ -157,8 +151,9 @@ public class Metronome {
     private void stop() {
         Log.e(TAG, "^^^^^stop");
         stopTrigger.onNext("stop");
+        //rxjava2无法onNext(null)
 //        stopTrigger.onNext(null);
-//        stopTrigger.onComplete();
+//        stopTrigger.onComplete();//错误
 
         beat = 0;
         Log.e(TAG, "stop 重置 beat = 0");
@@ -176,9 +171,10 @@ public class Metronome {
         Log.e(TAG, "^^^^^restartIfPlaying");
 
         if (isPlaying()) {
+            //rxjava2无法onNext(null)
             stopTrigger.onNext("restartIfPlaying");
 //            stopTrigger.onNext(null);
-//            stopTrigger.onComplete();
+//            stopTrigger.onComplete();//错误
             play();
         }
     }
