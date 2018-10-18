@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "28.0.2"
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId 'pri.weiqiang.metronome'
         //minSdkVersion 小于21 会报错 无法使用在xml图标使用@color/colorPrimary
